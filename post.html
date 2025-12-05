@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Property - PropertyPick</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <link rel="icon" href="logo.png" type="image/png">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background: #f8f9fa;
+        }
+
+        .wizard-container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .step-indicator::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #eee;
+            z-index: 0;
+        }
+
+        .step {
+            position: relative;
+            z-index: 1;
+            background: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #eee;
+            font-weight: 600;
+            color: #999;
+        }
+
+        .step.active {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+        }
+
+        .step.completed {
+            border-color: var(--secondary);
+            background: var(--secondary);
+            color: white;
+        }
+
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .image-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .preview-item {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="logo.png" alt="Logo">
+                <span>PropertyPick</span>
+            </a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="wizard-container">
+            <h1 style="text-align: center; margin-bottom: 10px;">Post Your Property</h1>
+            <p style="text-align: center; color: var(--text-light); margin-bottom: 30px;">Sell or Rent your property for
+                free</p>
+
+            <div class="step-indicator">
+                <div class="step active">1</div>
+                <div class="step">2</div>
+                <div class="step">3</div>
+            </div>
+
+            <form id="postPropertyForm">
+                <!-- Step 1: Basic Info -->
+                <div class="form-section active" id="step1">
+                    <h3>Basic Details</h3>
+                    <div class="form-group">
+                        <label>I am a</label>
+                        <select class="form-control" id="userType">
+                            <option value="Owner">Owner</option>
+                            <option value="Agent">Agent / Broker</option>
+                            <option value="Builder">Builder</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Property For</label>
+                        <div style="display: flex; gap: 20px;">
+                            <label style="font-weight: normal;"><input type="radio" name="for" value="Buy" checked>
+                                Sell</label>
+                            <label style="font-weight: normal;"><input type="radio" name="for" value="Rent">
+                                Rent</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Property Type</label>
+                        <select class="form-control" id="propType">
+                            <option value="Apartment">Apartment</option>
+                            <option value="Villa">Independent House / Villa</option>
+                            <option value="Plot">Plot / Land</option>
+                            <option value="Commercial">Commercial Office</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-full" onclick="nextStep(2)">Next</button>
+                </div>
+
+                <!-- Step 2: Location & Details -->
+                <div class="form-section" id="step2">
+                    <h3>Location & Features</h3>
+                    <div class="form-group">
+                        <label>City</label>
+                        <select class="form-control" id="city">
+                            <!-- Populated by JS -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Pincode</label>
+                        <input type="text" class="form-control" placeholder="Ex: 600001" required id="pincode">
+                    </div>
+                    <div class="form-group" id="bhkGroup">
+                        <label>Bedrooms (BHK)</label>
+                        <select class="form-control" id="bhk">
+                            <option value="1">1 BHK</option>
+                            <option value="2">2 BHK</option>
+                            <option value="3">3 BHK</option>
+                            <option value="4+">4+ BHK</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="areaGroup">
+                        <label id="areaLabel">Total Area (sqft)</label>
+                        <input type="number" class="form-control" placeholder="Ex: 1200" required id="sqft">
+                    </div>
+                    <div class="form-group">
+                        <label>Facing</label>
+                        <select class="form-control" id="facing">
+                            <option value="North">North</option>
+                            <option value="South">South</option>
+                            <option value="East">East</option>
+                            <option value="West">West</option>
+                            <option value="North-East">North-East</option>
+                            <option value="North-West">North-West</option>
+                            <option value="South-East">South-East</option>
+                            <option value="South-West">South-West</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea class="form-control" id="description" rows="5" maxlength="5000"
+                            placeholder="Describe your property (Max 5000 characters)..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Expected Price (Lakhs)</label>
+                        <input type="number" class="form-control" placeholder="Ex: 50" required id="price">
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button type="button" class="btn btn-outline" style="flex:1" onclick="prevStep(1)">Back</button>
+                        <button type="button" class="btn btn-primary" style="flex:1" onclick="nextStep(3)">Next</button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Media & Contact -->
+                <div class="form-section" id="step3">
+                    <h3>Photos & Contact</h3>
+                    <div class="form-group">
+                        <label>Upload Photos</label>
+                        <div style="border: 2px dashed #ddd; padding: 40px; text-align: center; border-radius: 8px; cursor: pointer; position: relative;"
+                            onclick="document.getElementById('fileInput').click()">
+                            <span class="material-icons-round" style="font-size: 40px; color: #ccc;">cloud_upload</span>
+                            <p>Click to upload photos</p>
+                            <input type="file" id="fileInput" accept="image/*" multiple style="display: none;"
+                                onchange="handleImageUpload(event)">
+                        </div>
+                        <div class="image-preview" id="imagePreview"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Your Phone Number</label>
+                        <input type="tel" class="form-control" placeholder="98765 43210" required>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button type="button" class="btn btn-outline" style="flex:1" onclick="prevStep(2)">Back</button>
+                        <button type="submit" class="btn btn-primary" style="flex:1">Post Property</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+
+    <script src="data.js"></script>
+    <script>
+        // Firebase Init
+        let db;
+        const useFirebase = typeof firebase !== 'undefined' && typeof firebaseConfig !== 'undefined' && firebaseConfig.apiKey !== "YOUR_API_KEY_HERE";
+
+        if (useFirebase) {
+            try {
+                firebase.initializeApp(firebaseConfig);
+                db = firebase.firestore();
+                console.log("Firebase Initialized in Post Page");
+            } catch (e) {
+                console.error("Firebase Init Error:", e);
+            }
+        }
+
+        // Populate Cities
+        const citySelect = document.getElementById('city');
+        CITIES.forEach(city => {
+            const opt = document.createElement('option');
+            opt.value = city;
+            opt.textContent = city;
+            citySelect.appendChild(opt);
+        });
+
+        let uploadedImages = [];
+        const defaultImage = 'https://images.unsplash.com/photo-1580587771525-78b9dba3b91d?auto=format&fit=crop&w=400&q=80';
+
+        // Dynamic Form Logic
+        const propTypeSelect = document.getElementById('propType');
+        const bhkGroup = document.getElementById('bhkGroup');
+        const areaLabel = document.getElementById('areaLabel');
+
+        propTypeSelect.addEventListener('change', function () {
+            const type = this.value;
+            if (type === 'Plot') {
+                bhkGroup.style.display = 'none';
+                areaLabel.textContent = 'Plot Area (sqft)';
+            } else {
+                bhkGroup.style.display = 'block';
+                areaLabel.textContent = 'Total Area (sqft)';
+            }
+        });
+
+        function nextStep(step) {
+            // Validate current step
+            const currentStepDiv = document.querySelector('.form-section.active');
+            const inputs = currentStepDiv.querySelectorAll('input, select, textarea');
+            let valid = true;
+
+            for (const input of inputs) {
+                if (!input.checkValidity()) {
+                    input.reportValidity();
+                    valid = false;
+                    break;
+                }
+            }
+
+            if (!valid) return;
+
+            document.querySelectorAll('.form-section').forEach(el => el.classList.remove('active'));
+            document.getElementById('step' + step).classList.add('active');
+
+            // Update indicators
+            const steps = document.querySelectorAll('.step');
+            steps.forEach((s, index) => {
+                if (index + 1 < step) s.classList.add('completed');
+                if (index + 1 === step) s.classList.add('active');
+                else s.classList.remove('active');
+            });
+        }
+
+        function prevStep(step) {
+            // No validation needed for going back
+            document.querySelectorAll('.form-section').forEach(el => el.classList.remove('active'));
+            document.getElementById('step' + step).classList.add('active');
+
+            // Update indicators
+            const steps = document.querySelectorAll('.step');
+            steps.forEach((s, index) => {
+                if (index + 1 < step) s.classList.add('completed');
+                if (index + 1 === step) s.classList.add('active');
+                else s.classList.remove('active');
+            });
+        }
+
+        function handleImageUpload(event) {
+            const files = event.target.files;
+            const preview = document.getElementById('imagePreview');
+
+            if (files.length > 0) {
+                Array.from(files).forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const imgData = e.target.result;
+                        uploadedImages.push(imgData);
+
+                        const img = document.createElement('img');
+                        img.src = imgData;
+                        img.className = 'preview-item';
+                        preview.appendChild(img);
+                    }
+                    reader.readAsDataURL(file);
+                });
+            }
+        }
+
+        document.getElementById('postPropertyForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const type = document.getElementById('propType').value;
+            const bhk = type === 'Plot' ? 0 : parseInt(document.getElementById('bhk').value);
+            const title = type === 'Plot'
+                ? `Plot in ${document.getElementById('city').value}`
+                : `${bhk}BHK ${type} in ${document.getElementById('city').value}`;
+
+            const mainImage = uploadedImages.length > 0 ? uploadedImages[0] : defaultImage;
+
+            const newListing = {
+                id: Date.now().toString(),
+                title: title,
+                price: document.getElementById('price').value + " Lakhs",
+                location: document.getElementById('city').value,
+                pincode: document.getElementById('pincode').value,
+                type: type,
+                status: 'Buy',
+                beds: bhk,
+                baths: type === 'Plot' ? 0 : 2,
+                sqft: document.getElementById('sqft').value,
+                facing: document.getElementById('facing').value,
+                description: document.getElementById('description').value,
+                image: mainImage,
+                images: uploadedImages.length > 0 ? uploadedImages : [defaultImage],
+                createdAt: new Date().toISOString()
+            };
+
+            if (useFirebase && db) {
+                try {
+                    await db.collection('properties').add(newListing);
+                    alert('Property Posted Successfully to Firebase!');
+                    window.close();
+                } catch (error) {
+                    console.error("Error posting to Firebase:", error);
+                    alert('Error posting property. Please try again.');
+                }
+            } else {
+                // Mock Save
+                const existing = JSON.parse(localStorage.getItem('my_listings') || '[]');
+                existing.push(newListing);
+                localStorage.setItem('my_listings', JSON.stringify(existing));
+
+                alert('Property Posted Successfully! It will now appear in the Buy section.');
+                window.close(); // Close tab or redirect
+            }
+        });
+    </script>
+</body>
+
+</html>
