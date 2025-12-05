@@ -41,7 +41,11 @@ async function loadListings() {
                 state.listings = MOCK_LISTINGS;
             }
             // Refresh view if needed
-            if (document.getElementById('allListings')) applyFilters();
+            if (state.view === 'home') {
+                renderHome();
+            } else if (document.getElementById('allListings')) {
+                applyFilters();
+            }
         } catch (error) {
             console.error("Error loading listings from Firebase:", error);
             state.listings = MOCK_LISTINGS;
