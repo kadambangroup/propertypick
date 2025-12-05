@@ -42,7 +42,7 @@ async function loadListings() {
             }
             // Refresh view if needed
             if (state.view === 'home') {
-                renderHome();
+                render();
             } else if (document.getElementById('allListings')) {
                 applyFilters();
             }
@@ -106,6 +106,7 @@ function render() {
 }
 
 function renderHome() {
+    app.innerHTML = '';
     const heroSection = document.createElement('section');
     heroSection.className = 'hero';
     heroSection.innerHTML = `
@@ -393,8 +394,10 @@ function closeRequirementModal() {
 const propertyModal = document.getElementById('propertyModal');
 let currentImageIndex = 0;
 let currentListingImages = [];
+let currentListing = null;
 
 function openPropertyModal(item) {
+    currentListing = item;
     // Handle Images
     currentListingImages = item.images && item.images.length > 0 ? item.images : [item.image];
     currentImageIndex = 0;
@@ -441,6 +444,41 @@ function prevImage() {
 
 function closePropertyModal() {
     propertyModal.classList.remove('active');
+}
+
+async function contactOwner() {
+    if (!state.user) {
+        alert("Please Login to Contact Owner");
+        openLogin();
+        return;
+    }
+
+    if (!currentListing) return;
+
+    // Save Inquiry
+    if (useFirebase && db) {
+        try {
+            await db.collection('inquiries').add({
+                propertyId: currentListing.id || 'unknown',
+                propertyTitle: currentListing.title,
+                ownerId: currentListing.userId || 'admin',
+                userId: state.user.uid,
+                userName: state.user.name || 'User',
+                userPhone: state.user.phone,
+                timestamp: new Date().toISOString()
+            });
+            console.log("Inquiry saved");
+        } catch (error) {
+            console.error("Error saving inquiry:", error);
+        }
+    }
+
+    // Open WhatsApp
+    const ownerPhone = currentListing.phone || '9043672462';
+    const message = `Hi, I am interested in your property: ${currentListing.title}`;
+    const whatsappUrl = `https://wa.me/91${ownerPhone}?text=${encodeURIComponent(message)}`;
+
+    window.open(whatsappUrl, '_blank');
 }
 
 // Update renderCards to use openPropertyModal

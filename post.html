@@ -385,6 +385,15 @@
             };
 
             if (useFirebase && db) {
+                const user = firebase.auth().currentUser;
+                if (!user) {
+                    alert("You must be logged in to post a property!");
+                    return;
+                }
+
+                // Add User ID to listing
+                newListing.userId = user.uid;
+
                 try {
                     await db.collection('properties').add(newListing);
                     alert('Property Posted Successfully to Firebase!');

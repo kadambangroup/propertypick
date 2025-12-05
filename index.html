@@ -218,7 +218,7 @@
             style="max-width: 900px; width: 90%; padding: 0; overflow: hidden; display: flex; flex-direction: column;">
             <span class="close-modal" onclick="closePropertyModal()"
                 style="z-index: 10; background: white;">&times;</span>
-            <div class="property-modal-body" style="display: flex; height: 600px;">
+            <div class="property-modal-body">
                 <!-- Left: Images -->
                 <div class="property-images"
                     style="flex: 1.2; background: #000; position: relative; display: flex; align-items: center; justify-content: center;">
@@ -241,7 +241,7 @@
                     </div>
                 </div>
                 <!-- Right: Details -->
-                <div class="property-details" style="flex: 1; padding: 30px; overflow-y: auto;">
+                <div class="property-details">
                     <h2 id="modalTitle" style="font-size: 1.8rem; margin-bottom: 10px;"></h2>
                     <div id="modalPrice"
                         style="font-size: 1.5rem; color: var(--primary); font-weight: 800; margin-bottom: 20px;"></div>
@@ -292,8 +292,7 @@
                         </div>
                     </div>
 
-                    <button class="btn btn-primary btn-full"
-                        onclick="this.textContent = 'Call: 9043672462'; this.onclick=null;">Contact Owner</button>
+                    <button class="btn btn-primary btn-full" onclick="contactOwner()">Contact Owner</button>
                 </div>
             </div>
         </div>

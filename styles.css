@@ -684,14 +684,6 @@ body {
     height: 30px;
 }
 
-/* Responsive Footer */
-@media (max-width: 768px) {
-    .footer-grid {
-        grid-template-columns: 1fr;
-        gap: 30px;
-    }
-}
-
 /* User Dropdown */
 .user-dropdown {
     position: relative;
@@ -735,4 +727,132 @@ body {
     height: 1px;
     background: #eee;
     margin: 5px 0;
+}
+
+/* Property Modal Styles */
+.property-modal-content {
+    max-width: 900px;
+    width: 90%;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 80vh;
+    /* Fixed height on desktop */
+}
+
+.property-modal-body {
+    display: flex;
+    height: 100%;
+    overflow: hidden;
+}
+
+.property-images {
+    flex: 1.2;
+    background: #000;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+}
+
+.property-details {
+    flex: 1;
+    padding: 30px;
+    overflow-y: auto;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+
+    /* Navbar */
+    .navbar {
+        height: auto;
+        padding: 10px 0;
+    }
+
+    .nav-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .nav-links {
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+    }
+
+    /* Hero */
+    .hero {
+        height: 400px;
+    }
+
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+
+    .hero-search {
+        flex-direction: column;
+        border-radius: 20px;
+        padding: 20px;
+    }
+
+    .hero-search .search-input,
+    .hero-search .search-select {
+        border-right: none;
+        border-bottom: 1px solid #eee;
+        width: 100%;
+    }
+
+    .hero-search button {
+        width: 100%;
+        margin: 10px 0 0 0;
+    }
+
+    /* Page Layout */
+    .page-layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        position: static;
+        margin-bottom: 20px;
+    }
+
+    .listings-grid {
+        grid-template-columns: 1fr;
+        /* Single column on mobile */
+    }
+
+    /* Property Modal Responsive */
+    .property-modal-content {
+        width: 95%;
+        height: 90vh;
+        overflow-y: auto;
+    }
+
+    .property-modal-body {
+        flex-direction: column;
+        height: auto;
+        overflow: visible;
+    }
+
+    .property-images {
+        flex: none !important;
+        height: 300px !important;
+        width: 100% !important;
+    }
+
+    .property-details {
+        flex: none;
+        padding: 20px;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
 }
