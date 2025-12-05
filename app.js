@@ -62,6 +62,7 @@ const loginModal = document.getElementById('loginModal');
 const loginBtn = document.getElementById('loginBtn');
 const closeModal = document.querySelector('.close-modal');
 const loginForm = document.getElementById('loginForm');
+const registerForm = document.getElementById('registerForm');
 const navLinks = document.querySelectorAll('.nav-item');
 
 // Router
@@ -645,10 +646,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
 
-                if (window.location.protocol === 'file:') {
+                /* if (window.location.protocol === 'file:') {
                     alert("Phone Authentication requires a server (http:// or https://). It will not work with file://. Please use a local server (like VS Code Live Server) or deploy the app.");
                     return;
-                }
+                } */
 
                 // Setup Recaptcha
                 if (!window.regRecaptchaVerifier) {
@@ -730,10 +731,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
 
-                if (window.location.protocol === 'file:') {
+                /* if (window.location.protocol === 'file:') {
                     alert("Phone Authentication requires a server (http:// or https://). It will not work with file://. Please use a local server (like VS Code Live Server) or deploy the app.");
                     return;
-                }
+                } */
 
                 // Setup Recaptcha
                 if (!window.loginRecaptchaVerifier) {
